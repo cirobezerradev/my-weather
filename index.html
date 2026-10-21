@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#183d32" />
+    <meta name="description" content="Condições do tempo e previsão para os próximos cinco dias, com dados da Open-Meteo." />
+    <title>Clima em foco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body data-weather="clear">
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-sun" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="11" />
+        <path d="M32 5v8m0 38v8M5 32h8m38 0h8M13 13l6 6m26 26 6 6m0-38-6 6M19 45l-6 6" />
+      </symbol>
+      <symbol id="icon-cloud-sun" viewBox="0 0 64 64">
+        <path d="M19 26a13 13 0 0 1 25-5m-12-16v5m-13 0 4 4m-10 9h5m9-18-2 5" />
+        <path d="M17 48h30a9 9 0 0 0 0-18 12 12 0 0 0-23-1 10 10 0 0 0-7 19Z" />
+      </symbol>
+      <symbol id="icon-cloud" viewBox="0 0 64 64">
+        <path d="M16 48h32a10 10 0 0 0 0-20h-1a15 15 0 0 0-29-2 11 11 0 0 0-2 22Z" />
+      </symbol>
+      <symbol id="icon-fog" viewBox="0 0 64 64">
+        <path d="M18 34h28a9 9 0 0 0 0-18h-1a13 13 0 0 0-25-2m-5 30h37m-43 8h35" />
+      </symbol>
+      <symbol id="icon-rain" viewBox="0 0 64 64">
+        <path d="M17 36h30a9 9 0 0 0 0-18h-1a12 12 0 0 0-23-2 10 10 0 0 0-6 20Z" />
+        <path d="m23 43-3 7m15-7-3 7m15-7-3 7" />
+      </symbol>
+      <symbol id="icon-drizzle" viewBox="0 0 64 64">
+        <path d="M17 34h30a9 9 0 0 0 0-18h-1a12 12 0 0 0-23-2 10 10 0 0 0-6 20Z" />
+        <path d="M23 42v2m12-2v2m12-2v2" />
+      </symbol>
+      <symbol id="icon-snow" viewBox="0 0 64 64">
+        <path d="M17 34h30a9 9 0 0 0 0-18h-1a12 12 0 0 0-23-2 10 10 0 0 0-6 20Z" />
+        <path d="M23 43v9m-4-7 8 5m0-5-8 5m20-7v9m-4-7 8 5m0-5-8 5" />
+      </symbol>
+      <symbol id="icon-storm" viewBox="0 0 64 64">
+        <path d="M17 34h30a9 9 0 0 0 0-18h-1a12 12 0 0 0-23-2 10 10 0 0 0-6 20Z" />
+        <path d="m34 35-9 13h8l-3 11 13-17h-9l4-7" />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 64 64">
+        <path d="M46 42A22 22 0 0 1 22 11a22 22 0 1 0 24 31Z" />
+        <path d="m43 11 1 4 4 1-4 1-1 4-1-4-4-1 4-1 1-4Zm10 15 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z" />
+      </symbol>
+      <symbol id="icon-wind" viewBox="0 0 24 24">
+        <path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a3 3 0 1 1-3 3M4 16h7a3 3 0 1 1-3 3" />
+      </symbol>
+      <symbol id="icon-drop" viewBox="0 0 24 24">
+        <path d="M12 3s7 7.2 7 12a7 7 0 0 1-14 0c0-4.8 7-12 7-12Z" />
+        <path d="M9 16a3 3 0 0 0 3 3" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="10.8" cy="10.8" r="6.8" />
+        <path d="m16 16 5 5" />
+      </symbol>
+      <symbol id="icon-pin" viewBox="0 0 24 24">
+        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </symbol>
+      <symbol id="icon-crosshair" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 2v4m0 12v4M2 12h4m12 0h4" />
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h14m-6-6 6 6-6 6" />
+      </symbol>
+    </svg>
+
+    <div class="scene" aria-hidden="true"></div>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Clima em foco, início">
+          <span class="brand-mark"><svg><use href="#icon-sun"></use></svg></span>
+          <span class="brand-name">clima<span>em foco</span></span>
+        </a>
+        <div class="live-indicator"><span></span> DADOS EM TEMPO REAL</div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <p class="eyebrow"><span class="eyebrow-line"></span> OBSERVATÓRIO ATMOSFÉRICO</p>
+          <h1 id="page-title">O tempo, <em>mais perto.</em></h1>
+          <p class="intro-copy">Um olhar claro sobre o céu de hoje e os próximos dias.</p>
+        </section>
+
+        <form class="search-form" id="search-form" role="search">
+          <svg class="search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+          <label class="visually-hidden" for="city-input">Buscar cidade</label>
+          <input id="city-input" name="city" type="search" placeholder="Busque uma cidade..." autocomplete="off" />
+          <button class="locate-button" id="locate-button" type="button" aria-label="Usar minha localização" title="Usar minha localização">
+            <svg aria-hidden="true"><use href="#icon-crosshair"></use></svg>
+          </button>
+          <button class="search-button" type="submit" aria-label="Buscar cidade">
+            <svg aria-hidden="true"><use href="#icon-arrow"></use></svg>
+          </button>
+        </form>
+        <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+
+        <div class="weather-layout" id="weather-content" aria-busy="true">
+          <section class="current-panel glass-panel" aria-labelledby="current-title">
+            <div class="current-heading">
+              <div>
+                <p class="section-kicker"><svg aria-hidden="true"><use href="#icon-pin"></use></svg> AGORA EM</p>
+                <h2 id="current-title"><span id="city-name">São Paulo</span><span class="location-detail" id="location-detail"></span></h2>
+                <p class="local-time" id="local-time">Consultando o céu local...</p>
+              </div>
+              <div class="condition-orbit" aria-hidden="true">
+                <span class="orbit orbit-one"></span>
+                <span class="orbit orbit-two"></span>
+                <svg class="hero-weather-icon" id="current-icon"><use href="#icon-cloud-sun"></use></svg>
+              </div>
+            </div>
+
+            <div class="temperature-block">
+              <div class="temperature" id="current-temperature">--<span>°</span></div>
+              <div class="condition-text">
+                <p id="current-description">Carregando condições</p>
+                <span class="feels-like">Sensação de <span id="feels-like">--°</span></span>
+              </div>
+            </div>
+
+            <div class="metrics-row">
+              <div class="metric">
+                <span class="metric-icon"><svg aria-hidden="true"><use href="#icon-wind"></use></svg></span>
+                <div><span class="metric-label">VENTO</span><strong id="wind-speed">-- <small>km/h</small></strong></div>
+              </div>
+              <div class="metric">
+                <span class="metric-icon"><svg aria-hidden="true"><use href="#icon-drop"></use></svg></span>
+                <div><span class="metric-label">UMIDADE</span><strong id="humidity">--<small>%</small></strong></div>
+              </div>
+              <div class="metric">
+                <span class="metric-icon metric-sun"><svg aria-hidden="true"><use href="#icon-sun"></use></svg></span>
+                <div><span class="metric-label">CHUVA</span><strong id="precipitation">--<small>mm</small></strong></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="forecast-panel" aria-labelledby="forecast-title">
+            <div class="forecast-heading">
+              <div>
+                <p class="section-kicker">OLHANDO ADIANTE</p>
+                <h2 id="forecast-title">Próximos dias<span class="forecast-count"> / 05</span></h2>
+              </div>
+              <span class="forecast-unit">°C</span>
+            </div>
+            <div class="forecast-list" id="forecast-list" aria-live="polite"></div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <span>Feito para acompanhar o ritmo do céu.</span>
+        <span class="data-credit">DADOS <span>OPEN-METEO</span></span>
+      </footer>
+    </div>
+  </body>
+</html>
